@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Relay: Snack Swap - Namastey AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #F5EEDC;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03' /%3E%3C/svg%3E");
+            color: #3B2A20;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 28px;
+            font-weight: bold;
+            color: #8B5E3C;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #FFF8EE 0%, #FFE4CC 100%);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(139, 94, 60, 0.12);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139, 94, 60, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-title {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 36px;
+            font-weight: bold;
+            color: #8B5E3C;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #6B5346;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: #FFF8EE;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(139, 94, 60, 0.08);
+            border: 2px solid rgba(139, 94, 60, 0.1);
+        }
+
+        .section-title {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 22px;
+            color: #8B5E3C;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .state-selectors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .selector-group {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(139, 94, 60, 0.06);
+            border: 2px solid #E5D4C1;
+            transition: all 0.3s ease;
+        }
+
+        .selector-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 94, 60, 0.12);
+            border-color: #8B5E3C;
+        }
+
+        .selector-label {
+            font-weight: 700;
+            font-size: 15px;
+            color: #8B5E3C;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .state-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #FFF8EE 0%, #FFE4CC 100%);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            min-height: 80px;
+        }
+
+        .state-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #8B5E3C;
+            box-shadow: 0 2px 8px rgba(139, 94, 60, 0.2);
+        }
+
+        .state-info {
+            flex: 1;
+        }
+
+        .state-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #3B2A20;
+            margin-bottom: 4px;
+        }
+
+        .state-capital {
+            font-size: 12px;
+            color: #6B5346;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #3B2A20;
+            background: white;
+            border: 2px solid #D4A574;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        select:hover {
+            border-color: #8B5E3C;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #8B5E3C;
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.1);
+        }
+
+        .recipe-builder {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .recipe-slot {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #E5D4C1;
+        }
+
+        .slot-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #8B5E3C;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .slot-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        select.recipe-select {
+            font-size: 14px;
+            padding: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B5E3C 0%, #6B4423 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 94, 60, 0.4);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: #CCC;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #8B5E3C;
+            border: 2px solid #8B5E3C;
+        }
+
+        .btn-secondary:hover {
+            background: #8B5E3C;
+            color: white;
+        }
+
+        .recipe-result {
+            background: linear-gradient(135deg, #FFF8EE 0%, #FFE4CC 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 3px solid #8B5E3C;
+            box-shadow: 0 8px 32px rgba(139, 94, 60, 0.15);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .recipe-name {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 32px;
+            color: #8B5E3C;
+            text-align: center;
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+
+        .recipe-desc {
+            text-align: center;
+            color: #6B5346;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .ratings {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .rating-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(139, 94, 60, 0.08);
+        }
+
+        .rating-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .rating-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8B5E3C;
+            margin-bottom: 4px;
+        }
+
+        .rating-label {
+            font-size: 12px;
+            color: #6B5346;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .recipe-steps {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .steps-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8B5E3C;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #FFF8EE;
+            border-radius: 12px;
+            border-left: 4px solid #8B5E3C;
+        }
+
+        .step-number {
+            background: #8B5E3C;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            flex: 1;
+            line-height: 1.6;
+            color: #3B2A20;
+        }
+
+        .cook-mode {
+            background: #FFF8EE;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(139, 94, 60, 0.15);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .cook-step-display {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            margin: 30px 0;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(139, 94, 60, 0.08);
+            border: 3px solid #E5D4C1;
+        }
+
+        .cook-step-text {
+            font-size: 26px;
+            line-height: 1.8;
+            color: #3B2A20;
+            font-weight: 500;
+        }
+
+        .cook-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .step-indicator {
+            display: inline-block;
+            background: #8B5E3C;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #8B5E3C;
+            position: absolute;
+            animation: confetti-fall 3s linear;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-banner {
+            background: linear-gradient(135deg, #D4E7C5 0%, #B8D8A0 100%);
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 20px;
+            border: 2px solid #6B9654;
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .success-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3B5930;
+        }
+
+        @media (max-width: 768px) {
+            .state-selectors {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-builder {
+                grid-template-columns: 1fr;
+            }
+
+            .ratings {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .cook-step-text {
+                font-size: 20px;
+            }
+
+            .cook-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: #8B5E3C;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 4px;
+            box-shadow: 0 2px 6px rgba(139, 94, 60, 0.2);
+        }
+
+        .ingredient-preview {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 12px;
+            border: 2px solid #E5D4C1;
+        }
+
+        .ingredient-list {
+            font-size: 13px;
+            color: #6B5346;
+            line-height: 1.6;
+        }
+
+        .random-btn {
+            background: linear-gradient(135deg, #D4A574 0%, #8B5E3C 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .random-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                👨‍🍳 Namastey AI
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-title">🍽️ Recipe Relay: Snack Swap</div>
+            <div class="hero-subtitle">
+                Create delicious fusion snacks by combining authentic dishes from two Indian states!
+                <br>Mix ingredients, techniques, and flavors to discover unique culinary creations.
+            </div>
+            <div>
+                <span class="feature-badge">🌶️ Authentic Recipes</span>
+                <span class="feature-badge">🎨 Creative Fusions</span>
+                <span class="feature-badge">👨‍🍳 Cook Mode</span>
+                <span class="feature-badge">⭐ Smart Ratings</span>
+            </div>
+        </div>
+
+        <!-- State Selectors -->
+        <div class="card">
+            <div class="section-title">🗺️ Select Your Culinary States</div>
+            <div class="state-selectors">
+                <!-- Primary State -->
+                <div class="selector-group">
+                    <label class="selector-label">🏛️ Primary State</label>
+                    <div class="state-header" id="state1-header">
+                        <img class="state-image" id="state1-img" src="" alt="">
+                        <div class="state-info">
+                            <div class="state-name" id="state1-name">Select a state</div>
+                            <div class="state-capital">
+                                <span>📍</span>
+                                <span id="state1-capital">Capital</span>
+                            </div>
+                        </div>
+                    </div>
+                    <select id="state1-select" onchange="updateStateHeader(1)">
+                        <option value="">Choose your primary state...</option>
+                    </select>
+                    <button class="random-btn" onclick="randomState(1)">🎲 Random State</button>
+                    <div class="ingredient-preview" id="state1-preview" style="display: none;">
+                        <div style="font-weight: 700; color: #8B5E3C; margin-bottom: 8px;">Available Dishes:</div>
+                        <div class="ingredient-list" id="state1-dishes"></div>
+                    </div>
+                </div>
+
+                <!-- Partner State -->
+                <div class="selector-group">
+                    <label class="selector-label">🤝 Partner State</label>
+                    <div class="state-header" id="state2-header">
+                        <img class="state-image" id="state2-img" src="" alt="">
+                        <div class="state-info">
+                            <div class="state-name" id="state2-name">Select a state</div>
+                            <div class="state-capital">
+                                <span>📍</span>
+                                <span id="state2-capital">Capital</span>
+                            </div>
+                        </div>
+                    </div>
+                    <select id="state2-select" onchange="updateStateHeader(2)">
+                        <option value="">Choose your partner state...</option>
+                    </select>
+                    <button class="random-btn" onclick="randomState(2)">🎲 Random State</button>
+                    <div class="ingredient-preview" id="state2-preview" style="display: none;">
+                        <div style="font-weight: 700; color: #8B5E3C; margin-bottom: 8px;">Available Dishes:</div>
+                        <div class="ingredient-list" id="state2-dishes"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Builder -->
+        <div class="card" id="recipe-builder" style="display: none;">
+            <div class="section-title">🎯 Build Your Fusion Recipe</div>
+            <div class="recipe-builder">
+                <div class="recipe-slot">
+                    <div class="slot-label">Main Dish</div>
+                    <span class="slot-icon">🍛</span>
+                    <select class="recipe-select" id="main-select">
+                        <option value="">Select main...</option>
+                    </select>
+                </div>
+                <div class="recipe-slot">
+                    <div class="slot-label">Side / Add-on</div>
+                    <span class="slot-icon">🥘</span>
+                    <select class="recipe-select" id="side-select">
+                        <option value="">Select side...</option>
+                    </select>
+                </div>
+                <div class="recipe-slot">
+                    <div class="slot-label">Cooking Method</div>
+                    <span class="slot-icon">👨‍🍳</span>
+                    <select class="recipe-select" id="method-select">
+                        <option value="">Select method...</option>
+                        <option value="Deep Fry,🔥,Crispy golden perfection">🔥 Deep Fry</option>
+                        <option value="Steam,♨️,Light and fluffy">♨️ Steam</option>
+                        <option value="Griddle,🍳,Crispy on the outside">🍳 Griddle</option>
+                        <option value="Ferment,🫙,Complex tangy flavors">🫙 Ferment</option>
+                        <option value="Boil,💧,Soft and comforting">💧 Boil</option>
+                        <option value="Bake,🔆,Evenly cooked warmth">🔆 Bake</option>
+                        <option value="Tandoor,🔥,Smoky charred goodness">🔥 Tandoor</option>
+                        <option value="Sauté,🥄,Quick and flavorful">🥄 Sauté</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="generateRecipe()" id="generate-btn" disabled>
+                ✨ Generate Fusion Recipe
+            </button>
+        </div>
+
+        <!-- Recipe Result -->
+        <div id="recipe-result"></div>
+
+        <!-- Cook Mode -->
+        <div id="cook-mode" style="display: none;"></div>
+    </div>
+
+    <script>
+        const statesData = {
+            maharashtra: {
+                name: 'Maharashtra',
+                capital: 'Mumbai',
+                flag: '🏛️',
+                image: 'https://images.unsplash.com/photo-1587241321921-91a834d82e76?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Vada Pav', ingredients: ['potato', 'bread', 'chutney', 'garlic'], methods: ['fry', 'assemble'] },
+                    { name: 'Misal Pav', ingredients: ['sprouts', 'spicy curry', 'farsan', 'bread'], methods: ['boil', 'spice'] },
+                    { name: 'Pav Bhaji', ingredients: ['mixed vegetables', 'butter', 'pav bread'], methods: ['mash', 'sauté'] },
+                    { name: 'Puran Poli', ingredients: ['lentils', 'jaggery', 'wheat'], methods: ['cook', 'roll'] }
+                ]
+            },
+            tamilnadu: {
+                name: 'Tamil Nadu',
+                capital: 'Chennai',
+                flag: '🏯',
+                image: 'https://images.unsplash.com/photo-1589301760014-68f7ad8c4176?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Idli', ingredients: ['rice', 'urad dal', 'fermented batter'], methods: ['steam', 'ferment'] },
+                    { name: 'Sambar', ingredients: ['lentils', 'tamarind', 'vegetables', 'spices'], methods: ['boil', 'temper'] },
+                    { name: 'Dosa', ingredients: ['rice', 'urad dal', 'crispy crepe'], methods: ['ferment', 'griddle'] },
+                    { name: 'Medu Vada', ingredients: ['urad dal', 'spices', 'curry leaves'], methods: ['fry', 'shape'] }
+                ]
+            },
+            punjab: {
+                name: 'Punjab',
+                capital: 'Chandigarh',
+                flag: '🌾',
+                image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Chole Bhature', ingredients: ['chickpeas', 'fried bread', 'tangy masala'], methods: ['fry', 'boil'] },
+                    { name: 'Lassi', ingredients: ['yogurt', 'sugar', 'cardamom'], methods: ['blend', 'chill'] },
+                    { name: 'Amritsari Kulcha', ingredients: ['stuffed bread', 'potato', 'onion'], methods: ['bake', 'stuff'] },
+                    { name: 'Makki di Roti', ingredients: ['corn flour', 'ghee', 'mustard greens'], methods: ['griddle', 'serve'] }
+                ]
+            },
+            kerala: {
+                name: 'Kerala',
+                capital: 'Thiruvananthapuram',
+                flag: '🥥',
+                image: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Appam', ingredients: ['rice', 'coconut', 'fermented'], methods: ['ferment', 'pan-cook'] },
+                    { name: 'Puttu', ingredients: ['rice flour', 'coconut', 'steamed'], methods: ['steam', 'layer'] },
+                    { name: 'Fish Curry', ingredients: ['fish', 'coconut milk', 'spices'], methods: ['simmer', 'temper'] },
+                    { name: 'Banana Chips', ingredients: ['raw banana', 'coconut oil', 'salt'], methods: ['fry', 'slice'] }
+                ]
+            },
+            rajasthan: {
+                name: 'Rajasthan',
+                capital: 'Jaipur',
+                flag: '🏜️',
+                image: 'https://images.unsplash.com/photo-1597074866923-dc0589150239?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Dal Baati', ingredients: ['wheat balls', 'lentils', 'ghee'], methods: ['bake', 'boil'] },
+                    { name: 'Pyaaz Kachori', ingredients: ['onion', 'fried pastry', 'spices'], methods: ['fry', 'stuff'] },
+                    { name: 'Mirchi Vada', ingredients: ['chili', 'potato', 'besan coating'], methods: ['fry', 'stuff'] },
+                    { name: 'Ghevar', ingredients: ['flour', 'ghee', 'sugar syrup'], methods: ['fry', 'soak'] }
+                ]
+            },
+            westbengal: {
+                name: 'West Bengal',
+                capital: 'Kolkata',
+                flag: '🐟',
+                image: 'https://images.unsplash.com/photo-1628687808818-11497b95f178?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Puchka', ingredients: ['crispy puri', 'tangy water', 'potato'], methods: ['fry', 'assemble'] },
+                    { name: 'Kathi Roll', ingredients: ['paratha', 'meat/paneer', 'onions'], methods: ['griddle', 'roll'] },
+                    { name: 'Mishti Doi', ingredients: ['yogurt', 'jaggery', 'caramelized'], methods: ['ferment', 'set'] },
+                    { name: 'Luchi', ingredients: ['refined flour', 'ghee'], methods: ['fry', 'puff'] }
+                ]
+            },
+            gujarat: {
+                name: 'Gujarat',
+                capital: 'Gandhinagar',
+                flag: '🦁',
+                image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Dhokla', ingredients: ['gram flour', 'fermented', 'steamed'], methods: ['steam', 'ferment'] },
+                    { name: 'Khandvi', ingredients: ['gram flour', 'yogurt', 'rolled'], methods: ['cook', 'roll'] },
+                    { name: 'Thepla', ingredients: ['wheat', 'fenugreek', 'spices'], methods: ['griddle', 'roll'] },
+                    { name: 'Fafda', ingredients: ['gram flour', 'turmeric', 'crispy'], methods: ['fry', 'shape'] }
+                ]
+            },
+            karnataka: {
+                name: 'Karnataka',
+                capital: 'Bengaluru',
+                flag: '☕',
+                image: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Bisi Bele Bath', ingredients: ['rice', 'lentils', 'vegetables', 'spices'], methods: ['cook', 'mix'] },
+                    { name: 'Mysore Pak', ingredients: ['gram flour', 'ghee', 'sugar'], methods: ['cook', 'set'] },
+                    { name: 'Ragi Mudde', ingredients: ['finger millet', 'water'], methods: ['cook', 'knead'] },
+                    { name: 'Neer Dosa', ingredients: ['rice', 'coconut', 'thin crepe'], methods: ['blend', 'griddle'] }
+                ]
+            },
+            goa: {
+                name: 'Goa',
+                capital: 'Panaji',
+                flag: '🏖️',
+                image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Fish Curry Rice', ingredients: ['fish', 'coconut', 'rice', 'spices'], methods: ['simmer', 'serve'] },
+                    { name: 'Bebinca', ingredients: ['coconut milk', 'eggs', 'sugar', 'layered'], methods: ['bake', 'layer'] },
+                    { name: 'Pork Vindaloo', ingredients: ['pork', 'vinegar', 'spices'], methods: ['marinate', 'cook'] },
+                    { name: 'Sanna', ingredients: ['rice', 'coconut', 'toddy'], methods: ['ferment', 'steam'] }
+                ]
+            },
+            uttarpradesh: {
+                name: 'Uttar Pradesh',
+                capital: 'Lucknow',
+                flag: '🕌',
+                image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8957a?w=400&h=300&fit=crop',
+                foods: [
+                    { name: 'Tunday Kabab', ingredients: ['meat', 'spices', 'tenderized'], methods: ['grill', 'marinate'] },
+                    { name: 'Aloo Tikki', ingredients: ['potato', 'spices', 'herbs'], methods: ['mash', 'fry'] },
+                    { name: 'Peda', ingredients: ['milk', 'sugar', 'cardamom'], methods: ['cook', 'shape'] },
+                    { name: 'Samosa', ingredients: ['potato', 'peas', 'pastry'], methods: ['stuff', 'fry'] }
+                ]
+            }
+        };
+
+        let currentRecipe = null;
+        let currentStepIndex = 0;
+
+        // Initialize
+        window.onload = function() {
+            populateStateSelects();
+            // Check for URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const landingState = urlParams.get('state');
+            if (landingState && statesData[landingState]) {
+                document.getElementById('state1-select').value = landingState;
+                updateStateHeader(1);
+            }
+        };
+
+        function populateStateSelects() {
+            const select1 = document.getElementById('state1-select');
+            const select2 = document.getElementById('state2-select');
+            
+            Object.keys(statesData).forEach(key => {
+                const state = statesData[key];
+                const option1 = document.createElement('option');
+                option1.value = key;
+                option1.textContent = state.flag + ' ' + state.name;
+                select1.appendChild(option1);
+
+                const option2 = document.createElement('option');
+                option2.value = key;
+                option2.textContent = state.flag + ' ' + state.name;
+                select2.appendChild(option2);
+            });
+        }
+
+        function updateStateHeader(stateNum) {
+            const selectId = 'state' + stateNum + '-select';
+            const selectEl = document.getElementById(selectId);
+            const stateKey = selectEl.value;
+            
+            if (!stateKey) {
+                document.getElementById('state' + stateNum + '-header').style.display = 'none';
+                document.getElementById('state' + stateNum + '-preview').style.display = 'none';
+                return;
+            }
+
+            const state = statesData[stateKey];
+            document.getElementById('state' + stateNum + '-header').style.display = 'flex';
+            document.getElementById('state' + stateNum + '-img').src = state.image;
+            document.getElementById('state' + stateNum + '-name').textContent = state.name;
+            document.getElementById('state' + stateNum + '-capital').textContent = state.capital;
+            
+            // Show dishes
+            const dishesEl = document.getElementById('state' + stateNum + '-dishes');
+            dishesEl.innerHTML = state.foods.map(f => '• ' + f.name).join('<br>');
+            document.getElementById('state' + stateNum + '-preview').style.display = 'block';
+
+            checkAndPopulateRecipeBuilder();
+        }
+
+        function randomState(stateNum) {
+            const keys = Object.keys(statesData);
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            document.getElementById('state' + stateNum + '-select').value = randomKey;
+            updateStateHeader(stateNum);
+        }
+
+        function checkAndPopulateRecipeBuilder() {
+            const state1 = document.getElementById('state1-select').value;
+            const state2 = document.getElementById('state2-select').value;
+
+            if (state1 && state2) {
+                document.getElementById('recipe-builder').style.display = 'block';
+                populateRecipeSelects(state1, state2);
+            } else {
+                document.getElementById('recipe-builder').style.display = 'none';
+            }
+        }
+
+        function populateRecipeSelects(state1Key, state2Key) {
+            const mainSelect = document.getElementById('main-select');
+            const sideSelect = document.getElementById('side-select');
+            
+            mainSelect.innerHTML = '<option value="">Select main...</option>';
+            sideSelect.innerHTML = '<option value="">Select side...</option>';
+
+            const state1 = statesData[state1Key];
+            const state2 = statesData[state2Key];
+
+            state1.foods.forEach(food => {
+                const option = document.createElement('option');
+                option.value = JSON.stringify({ ...food, state: state1.name });
+                option.textContent = food.name + ' (from ' + state1.name + ')';
+                mainSelect.appendChild(option);
+            });
+
+            state2.foods.forEach(food => {
+                const option = document.createElement('option');
+                option.value = JSON.stringify({ ...food, state: state2.name });
+                option.textContent = food.name + ' (from ' + state2.name + ')';
+                sideSelect.appendChild(option);
+            });
+
+            mainSelect.onchange = sideSelect.onchange = document.getElementById('method-select').onchange = checkGenerateBtn;
+        }
+
+        function checkGenerateBtn() {
+            const main = document.getElementById('main-select').value;
+            const side = document.getElementById('side-select').value;
+            const method = document.getElementById('method-select').value;
+            document.getElementById('generate-btn').disabled = !(main && side && method);
+        }
+
+        function generateRecipe() {
+            const mainFood = JSON.parse(document.getElementById('main-select').value);
+            const sideFood = JSON.parse(document.getElementById('side-select').value);
+            const methodData = document.getElementById('method-select').value.split(',');
+            
+            const fusionName = mainFood.name.split(' ')[0] + '-' + sideFood.name.split(' ')[0] + ' ' + methodData[0];
+            
+            const steps = [
+                `Prepare the ${mainFood.name} base from ${mainFood.state} by gathering: ${mainFood.ingredients.slice(0, 2).join(', ')}`,
+                `Take inspiration from ${sideFood.state}'s ${sideFood.name} and incorporate: ${sideFood.ingredients.slice(0, 2).join(', ')}`,
+                `Apply the ${methodData[0]} technique (${methodData[2]}) to bring both elements together harmoniously`,
+                `Season with authentic spices from both ${mainFood.state} and ${sideFood.state} for a balanced fusion flavor`,
+                `Garnish with fresh herbs and serve hot, celebrating the marriage of two rich culinary traditions!`
+            ];
+
+            const ratings = {
+                taste: Math.floor(Math.random() * 2) + 8,
+                ease: Math.floor(Math.random() * 3) + 6,
+                streetVibes: Math.floor(Math.random() * 2) + 8
+            };
+
+            currentRecipe = {
+                name: fusionName,
+                description: `A delightful fusion combining ${mainFood.state}'s ${mainFood.name} with ${sideFood.state}'s ${sideFood.name}!`,
+                steps,
+                ratings
+            };
+
+            displayRecipe();
+            showConfetti();
+        }
+
+        function displayRecipe() {
+            const resultDiv = document.getElementById('recipe-result');
+            resultDiv.innerHTML = `
+                <div class="recipe-result">
+                    <div style="text-align: center; font-size: 64px; margin-bottom: 20px;">🎉</div>
+                    <div class="recipe-name">${currentRecipe.name}</div>
+                    <div class="recipe-desc">${currentRecipe.description}</div>
+                    
+                    <div class="ratings">
+                        <div class="rating-card">
+                            <div class="rating-icon">⭐</div>
+                            <div class="rating-value">${currentRecipe.ratings.taste}/10</div>
+                            <div class="rating-label">Taste</div>
+                        </div>
+                        <div class="rating-card">
+                            <div class="rating-icon">⏱️</div>
+                            <div class="rating-value">${currentRecipe.ratings.ease}/10</div>
+                            <div class="rating-label">Ease</div>
+                        </div>
+                        <div class="rating-card">
+                            <div class="rating-icon">📈</div>
+                            <div class="rating-value">${currentRecipe.ratings.streetVibes}/10</div>
+                            <div class="rating-label">Street Vibes</div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-steps">
+                        <div class="steps-title">📋 Recipe Steps</div>
+                        ${currentRecipe.steps.map((step, i) => `
+                            <div class="step">
+                                <div class="step-number">${i + 1}</div>
+                                <div class="step-text">${step}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <button class="btn btn-primary" onclick="enterCookMode()">
+                        ▶️ Enter Cook Mode
+                    </button>
+                </div>
+            `;
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function showConfetti() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = ['#8B5E3C', '#D4A574', '#FFD700', '#FF6B6B'][Math.floor(Math.random() * 4)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        function enterCookMode() {
+            currentStepIndex = 0;
+            displayCookMode();
+            document.getElementById('recipe-result').style.display = 'none';
+            document.getElementById('cook-mode').style.display = 'block';
+            document.getElementById('cook-mode').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayCookMode() {
+            const cookDiv = document.getElementById('cook-mode');
+            const isLastStep = currentStepIndex === currentRecipe.steps.length - 1;
+            
+            cookDiv.innerHTML = `
+                <div class="cook-mode">
+                    <button class="btn btn-secondary" onclick="exitCookMode()" style="max-width: 200px;">
+                        ← Exit Cook Mode
+                    </button>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <h2 style="font-family: 'Merriweather', serif; font-size: 32px; color: #8B5E3C; margin-bottom: 16px;">
+                            ${currentRecipe.name}
+                        </h2>
+                        <div class="step-indicator">
+                            Step ${currentStepIndex + 1} of ${currentRecipe.steps.length}
+                        </div>
+                    </div>
+
+                    <div class="cook-step-display">
+                        <div class="cook-step-text">${currentRecipe.steps[currentStepIndex]}</div>
+                    </div>
+
+                    <div class="cook-controls">
+                        <button class="btn btn-secondary" onclick="previousStep()" ${currentStepIndex === 0 ? 'disabled' : ''}>
+                            ← Previous Step
+                        </button>
+                        <button class="btn btn-primary" onclick="nextStep()" ${isLastStep ? 'disabled' : ''}>
+                            Next Step →
+                        </button>
+                    </div>
+
+                    ${isLastStep ? `
+                        <div class="success-banner">
+                            <div class="success-icon">🎊</div>
+                            <div class="success-text">Your fusion masterpiece is ready to serve!</div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                displayCookMode();
+            }
+        }
+
+        function nextStep() {
+            if (currentStepIndex < currentRecipe.steps.length - 1) {
+                currentStepIndex++;
+                displayCookMode();
+            }
+        }
+
+        function exitCookMode() {
+            document.getElementById('cook-mode').style.display = 'none';
+            document.getElementById('recipe-result').style.display = 'block';
+            document.getElementById('recipe-result').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
